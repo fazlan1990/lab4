@@ -1,35 +1,34 @@
 name: Publish Package to GitHub NPM Registry
 
-on: 
+on:
   release:
-     types: published
-    
+    types: published
+
 jobs:
-    npm-package:
-      permissions:
-         packages: read
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v4
+  npm-package:
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-        - uses: actions/setup-node@v4
-          with:
-            node-version: '20.x'
-            registry-url: 'https://npm.pkg.github.com/'
+      - name: Setup NodeJS and Registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com/'  # Set GitHub registry here
 
-        - name: npm install
-          run: npm install
+      - name: Debug Registry and NPM Config
+        run: |
+          npm config get registry
+          echo "Checking .npmrc contents:"
+          cat ~/.npmrc
 
-        - name: npm publish
-          continue-on-error: true
-          run: npm publish
-          env:
-            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: npm install
 
-        - name: echo
-          run: echo $GITHUB_TOKEN
-           
-          
-            
-            
+      - name: Publish Package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
