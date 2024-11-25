@@ -18,5 +18,12 @@ jobs:
 
         - name: npm install
           run: npm install
+
+        - name: npm publish
+          run: npm publish
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           
+          
             
             
