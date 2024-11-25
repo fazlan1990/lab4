@@ -19,11 +19,7 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com/'  # Set GitHub registry here
 
-      - name: Debug Registry and NPM Config
-        run: |
-          npm config get registry
-          echo "Checking .npmrc contents:"
-          cat ~/.npmrc
+   
 
       - name: Install Dependencies
         run: npm install
